@@ -1,0 +1,19 @@
+{
+  "name": "schwarzviz",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "connect": "^3.4.1",
+    "serve-static": "^1.10.2"
+  },
+  "devDependencies": {
+    "nodemon": "^1.9.2"
+  }
+}
