@@ -13,20 +13,24 @@ audio.autoplay = true;
 
 
 
-var canvas, ctx, source, context, analyser, fbc_array, bars, bar_x, bar_width, bar_height;
+var canvas, totalTime, bufferLength, ctx, source, context, analyser, fbc_array, bars, bar_x, bar_width, bar_height;
 
-window.addEventListener("load", initMp3Player, false);
 function initMp3Player(){
   document.getElementById('audio_box').appendChild(audio);
   context = new AudioContext(); // AudioContext object instance
   analyser = context.createAnalyser(); // AnalyserNode method
   canvas = document.getElementById('analyser_render');
   ctx = canvas.getContext('2d');
-  canvas.width = 1000;
   // Re-route audio playback into the processing graph of the AudioContext
   source = context.createMediaElementSource(audio); 
   source.connect(analyser);
   analyser.connect(context.destination);
+  totalTime = Math.ceil(document.getElementById('audio_box').children[0].duration);
+  console.log('totalTime : ', totalTime);
+  bufferLength = analyser.frequencyBinCount
+  
+  
+  fbc_array = new Uint8Array(analyser.frequencyBinCount);
   frameLooper();
 
 }
@@ -34,27 +38,54 @@ function initMp3Player(){
 // Looping at the default frame rate that the browser provides(approx. 60 FPS)
 function frameLooper(){
   //uses frameLooper to draw frame by frame
-  window.requestAnimationFrame(frameLooper);
+  
+  
+
+
+  
   //stores an array of bits, representing the data values of the FFT/visualization
-  fbc_array = new Uint8Array(analyser.frequencyBinCount);
+  
   //copies current frequency data of bytes to fbc_array
-  analyser.getByteFrequencyData(fbc_array);
   //erases previous frame
   ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
+  analyser.getByteFrequencyData(fbc_array);
   var my_gradient = ctx.createLinearGradient(0,0,0,170);
   my_gradient.addColorStop(0,"#0CF");
   my_gradient.addColorStop(1,"#167AD0");
   ctx.fillStyle = my_gradient;
-  // ctx.fillStyle = '#00CCFF'; // Color of the bars
-  bars = 1000;
-  for (var i = 0; i < bars; i++) {
-    bar_x = i * 1;
-    bar_width = 1;
-    bar_height = -(fbc_array[i] / 2);
+  ctx.fillStyle = '#00CCFF'; // Color of the bars
+    var circleRadius = canvas.height/4
+    var frequencyWidth = ((2* Math.PI) / bufferLength), frequencyHeight = 0, x = 0;
+    console.log("FW", frequencyWidth);
+
+  for (var i = 0; i < bufferLength; i+=5) {
+    frequencyHeight = fbc_array[i] * (canvas.height * .003)/4
+    ctx.beginPath();
     //  fillRect( x, y, width, height ) // Explanation of the parameters below
-    ctx.fillRect(bar_x, canvas.height, bar_width, bar_height);
+    // ctx.fillRect(bar_x, canvas.height, bar_width, bar_height);
+    var ax  = canvas.width/2 +(circleRadius* Math.cos(x*1000));
+    var ay  = canvas.height/2 +(circleRadius* Math.sin(x*1000));
+    var bx  = canvas.width/2 +((circleRadius+frequencyHeight)* Math.cos(x*1000));
+    var by = canvas.height/2 +((circleRadius+frequencyHeight)* Math.sin(x*1000));
+    ctx.moveTo(ax, ay);
+    ctx.lineTo(bx, by);
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = "#4d6db0";
+    ctx.stroke();
+
+    // var currentTime = Math.ceil(document.getElementById('audio_box').children[0].currentTime);
+    // ctx.beginPath();
+    // ctx.arc(canvas.width/2, canvas.height/2, circleRadius-10, -0.5*Math.PI, -0.5*Math.PI+(((2*Math.PI)/totalTime)*currentTime), false);
+    // ctx.lineWidth = 10;
+    // ctx.stroke();
+    x += (2*Math.PI)/(bufferLength);
   }
+
+
+  call = window.requestAnimationFrame(frameLooper);
 }
+
+window.addEventListener("load", initMp3Player, false);
 
 // function frameLooperCircle(){
 //   window.requestAnimationFrame(frameLooperCircle);
