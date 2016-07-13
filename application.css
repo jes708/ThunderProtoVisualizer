@@ -1,0 +1,17 @@
+html {
+  background-color: #212121;
+}
+
+#mp3_player {
+  height: 1000px;
+}
+
+audio{
+  width: 100%;
+  margin: 0 auto;
+}
+
+svg {
+  display: block;
+  margin: 0 auto;
+}

@@ -1,28 +1,19 @@
 <!DOCTYPE html>
-<html lang="en-us">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width">
-  <title>JS Visualizer</title>
-  
-  <!--[if le IE 9]>
-      <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-      <script src="scripts/respond.js"></script>
-    <![endif]-->
-    <!-- <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" /> -->
-    <link href='http://fonts.googleapis.com/css?family=Righteous|Nova+Square' rel='stylesheet' type='text/css'>
-    <link href="stylesheets/normalize.css" rel="stylesheet" type="text/css">
-    <link href="stylesheets/style.css" rel="stylesheet" type="text/css">
-  
-    <script src="app.js"></script>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>IT'S BATTER TIME!!</title>
+    <link rel="stylesheet" href="application.css" />
+  </head>
 
-</head>
-<body>
-<div id="mp3_player">
-  <div id="audio_box"></div>
-  <canvas id="analyser_render"></canvas>
-</div>
-    
-  
-</body>
+  <body>
+    <div id='mp3_player'>
+      <audio id="audioElement" src="./audio/Odesza - Above The Middle.mp3"
+        controls autoplay loop></audio>
+    </div>
+    <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script src="app.js"></script>
+  </body>
 </html>
